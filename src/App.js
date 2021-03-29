@@ -1,24 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+ 
+import { Provider } from "react-redux";
+import { AuthProvider,useIsAuthenticated,useAuthHeader } from "react-auth-kit";
+
+
+
+import Routes from "Routes";
+// globalization
+import { IntlProvider } from "react-intl";
+
+// material
+import { CssBaseline } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+
+//duck store
+import store from "./store";
+
+// theme
+//import muiTheme from "styles/theme/default.json";
+//const theme = createMuiTheme(muiTheme);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+
+   
+
+  const [state, setState] = React.useState({
+    locale: localStorage.getItem("locale") || "en",
+    message: localStorage.getItem("language"),
+  });
+  
+
+
+  return (     
+      <Provider store={store}>
+        <IntlProvider
+          locale={state.locale}
+          messages={state.messages}
+          defaultLocale={"en"}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <AuthProvider
+            authStorageType="cookie"
+            authStorageName="_auth_t"
+            authTimeStorageName="_auth_time"
+            stateStorageName="_auth_state"
+            cookieDomain={window.location.hostname}
+            cookieSecure={window.location.protocol === "https:"}
+          >
+            <Routes/>
+          </AuthProvider>
+        </IntlProvider>
+      </Provider>
+    
   );
 }
 

@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="description" content="EBS - Enterprise Breeding System">
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,11 +24,39 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>EBS</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+            <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <script type="systemjs-importmap" src="https://storage.googleapis.com/react.microfrontends.app/importmap.json"></script>
+        <script type="systemjs-importmap">
+        {
+            "imports": {
+            "sample-manager": "http://localhost:3001/static/js/main.js",
+            "single-spa": "https://cdnjs.cloudflare.com/ajax/libs/single-spa/5.0.0/system/single-spa.min.js"
+            }
+        }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/import-map-overrides@2.1.0/dist/import-map-overrides.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/systemjs@6.7.1/dist/system.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/systemjs@6.7.1/dist/extras/amd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/systemjs@6.7.1/dist/extras/named-exports.min.js"></script>
+        <script>
+        // modules life cycles
+        System.import('sample-manager').then(m => console.log(m))
+
+        System.import('single-spa').then(function(singleSpa) {
+            singleSpa.registerApplication (
+                'sample-manager',
+                () => System.import('sample-manager'),
+                (location) => location.pathname.startsWith('/sm/requestmanager')
+            )
+            singleSpa.start()
+        })
+        </script>
+    <div id="root" ></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
