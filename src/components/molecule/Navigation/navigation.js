@@ -4,12 +4,9 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { makeStyles, useTheme, fade } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom"; 
-
 import {
   Drawer,
   IconButton,
-  Toolbar,
-  Divider,
   List,
   ListItem,
   ListItemIcon,
@@ -18,7 +15,6 @@ import {
 import {
   ChevronLeft,
   ChevronRight,
-  ArrowRightOutlined,
   LensRounded
 } from "@material-ui/icons";
 import EbsLogo from "components/atoms/EBSLogoVertical";
@@ -112,7 +108,7 @@ const NavigationMolecule = React.forwardRef((props, ref) => {
             title: "Request Manager",
             icon: "icon",
             tag: "ddd",
-            path: "sm/requestmanager",
+            path: "/sm/requestmanager",
           },
           {
             key: "gsm",

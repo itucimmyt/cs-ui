@@ -5,7 +5,7 @@ import MainLayout from './layout'
 
 const LayoutRoutes = ({ component: Component, ...rest }) => {
     return (
-        <PrivateRoute {...rest} render={props => (
+        <PrivateRoute {...rest} component={props => (
             <MainLayout>
                 <Component {...props} />
             </MainLayout>

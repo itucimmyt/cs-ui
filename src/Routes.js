@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Router } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Login from "page/Login";
 import Home from "page/Home";
 import Dashboard from "page/Dashboard"
@@ -11,16 +11,16 @@ import LoginLayout from 'components/organism/LoginLayout'
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Switch>
         <MainLayout path={"/"} component={Home} loginPath={"/login"} exact />     
         <BlankLayout path={"/dashboard"} component={Dashboard} loginPath={"/login"} exact />  
-        <BlankLayout path={"/instances/:instanceID"} component={InstancePage} loginPath={"/login"} exact />  
+        <BlankLayout path={"/instances"} component={InstancePage} loginPath={"/login"} exact />  
         <MainLayout path={"/sm/:route?"} component={Home} loginPath={"/login"} exact />   
         <LoginLayout path={"/login"} component={Login} exact />
         <LoginLayout path={"/callback"} component={Callback} exact />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 

@@ -8,6 +8,9 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Avatar,
+  Chip,
+  Paper,
 } from "@material-ui/core";
 import {
   Search,
@@ -17,18 +20,30 @@ import {
   FilterList,
   Help,
   AccountCircle,
-  Menu
+  Menu,
+  Done,
 } from "@material-ui/icons";
 import { makeStyles, fade } from "@material-ui/core/styles";
 import ServiceManagementIcon from "components/atoms/ServiceManagementIcon";
 import { FormattedMessage } from "react-intl";
-import { useHistory } from "react-router-dom"; 
-
+import { useHistory } from "react-router-dom";
+import AvatarProfile from "components/atoms/AvatarProfile";
+import { useDispatch, useSelector } from "react-redux";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
+  avatar: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
   grow: {
-    flexGrow: 1,
+    flexGrow: 0.02,
   },
   title: {
     display: "none",
@@ -131,10 +146,14 @@ const NavBarHeaderMolecule = React.forwardRef((props, ref) => {
   const { open, children, ...rest } = props;
   let history = useHistory();
 
- //events
- const handleOnClickDashboard = () => {
-   history.push('/dashboard')
-};
+  //events
+  const handleOnClickDashboard = () => {
+    history.push("/dashboard");
+  };
+
+  const handleDelete = () => {
+    console.info("You clicked the delete icon.");
+  };
 
   return (
     <AppBar
@@ -164,7 +183,12 @@ const NavBarHeaderMolecule = React.forwardRef((props, ref) => {
         </Typography>
 
         <div className={classes.actions}>
-          <IconButton color="inherit" aria-label="open drawer" edge="start" onClick={handleOnClickDashboard}>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleOnClickDashboard}
+          >
             <Dashboard />
           </IconButton>
           <IconButton color="inherit" aria-label="open drawer" edge="start">
@@ -177,31 +201,21 @@ const NavBarHeaderMolecule = React.forwardRef((props, ref) => {
             <FilterList />
           </IconButton>
         </div>
-        <div className={classes.grow} />
-        <div className={classes.sectionDesktop}>
-          <IconButton
-            aria-label="show 17 new notifications"
-            color="inherit"
-            edge="end"
-          >
-            <Search />
-          </IconButton>
-          <IconButton
-            aria-label="show 17 new notifications"
-            color="inherit"
-            edge="end"
-          >
-            <Help />
-          </IconButton>
-          <IconButton
-            edge="end"
-            aria-label="account of current user"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-        </div>
+        <IconButton
+          aria-label="show 17 new notifications"
+          color="inherit"
+          edge="end"
+        >
+          <Search />
+        </IconButton>
+        <IconButton
+          aria-label="show 17 new notifications"
+          color="inherit"
+          edge="end"
+        >
+          <Help />
+        </IconButton>
+        <AvatarProfile />
       </Toolbar>
     </AppBar>
   );

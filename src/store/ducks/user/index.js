@@ -1,24 +1,20 @@
- 
-import {client} from 'utils/apollo/apollo'
-import { FIND_USER_LIST } from 'utils/apollo/gql/user';
-
- 
- 
+import { client } from "utils/apollo/apollo";
+import { FIND_USER_LIST } from "utils/apollo/gql/user";
+import jwtService from "services/jwtService";
+import history from '@history';
 
 // constants
 const dataInitial = {
-  user: null, 
-  roles: []
+  user: null,
+  roles: [],
 };
 
- 
-const SET_USER_DATA = '[USER] SET DATA';
-const USER_REGISTER = '[USER] REGISTER';
-const IS_REGISTERING = '[USER] REGISTERING';
-const USER_ROLES = '[USER] ROLES';
-const REMOVE_USER_DATA = '[USER] REMOVE DATA';
-const USER_LOGGED_OUT = '[USER] LOGGED OUT';
-
+const SET_USER_DATA = "[USER] SET DATA";
+const USER_REGISTER = "[USER] REGISTER";
+const IS_REGISTERING = "[USER] REGISTERING";
+const USER_ROLES = "[USER] ROLES";
+const REMOVE_USER_DATA = "[USER] REMOVE DATA";
+const USER_LOGGED_OUT = "[USER] LOGGED OUT";
 
 // reducer
 export default function authReducer(state = dataInitial, action) {
@@ -29,56 +25,73 @@ export default function authReducer(state = dataInitial, action) {
         user: action.payload,
       };
     case USER_ROLES:
-        return {
-            ...state,
-            roles: action.payload,
-          };
-    
+      return {
+        ...state,
+        roles: action.payload,
+      };
+
     default:
       return state;
   }
 }
 
+/**
+ * Logout
+ */
+export function logoutUser() {
+  return (dispatch, getState) => {
+    history.push({
+      pathname: "/",
+    });
+
+    jwtService.logout();
+
+    // dispatch(FuseActions.setInitialSettings());
+
+    return dispatch({
+      type: USER_LOGGED_OUT,
+    });
+  };
+}
+
 // actions
-export const setUserData = tokenData => async (dispatch, getState) => {
+export const setUserData = (tokenData) => async (dispatch, getState) => {
+  const userName = tokenData[
+    "http://wso2.org/claims/emailaddress"
+  ].toLowerCase();
 
-   const userName = tokenData['http://wso2.org/claims/emailaddress'].toLowerCase();
- 
-	
-	client
-		.query({
-			query: FIND_USER_LIST,
-			variables: { val: userName }
-		})
-		.then(response => {
-			const profile = response.data.findUserList.content[0];
-			
-			if (profile) {
-				dispatch({
-					type: SET_USER_DATA,
-					payload: profile
-				});
+  client
+    .query({
+      query: FIND_USER_LIST,
+      variables: { val: userName },
+    })
+    .then((response) => {
+      const profile = response.data.findUserList.content[0];
 
-				dispatch({
-					type: USER_ROLES,
-					payload: [`${profile.roles[0].description}`]
-				});
+      if (profile) {
+        dispatch({
+          type: SET_USER_DATA,
+          payload: profile,
+        });
 
-				if (profile.roles[0].description === 'poweruser') {
-					dispatch({
-						type: USER_ROLES,
-						payload: ['staff']
-					});
-				}
+        dispatch({
+          type: USER_ROLES,
+          payload: [`${profile.roles[0].description}`],
+        });
 
-				if (profile.person.status === 'Inactive') {
-					dispatch({
-						type: USER_ROLES,
-						payload: []
-					});
-				}
-			}
-		});
+        if (profile.roles[0].description === "poweruser") {
+          dispatch({
+            type: USER_ROLES,
+            payload: ["staff"],
+          });
+        }
+
+        if (profile.person.status === "Inactive") {
+          dispatch({
+            type: USER_ROLES,
+            payload: [],
+          });
+        }
+      }
+    });
 };
-
-

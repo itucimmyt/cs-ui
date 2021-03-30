@@ -51,9 +51,6 @@ export function oAuthAuthentication(authCode) {
        
         dispatch(userActions.setUserData(codeDecoded));
 
-        // dispatch(GetTenant(1));
-       // dispatch(UserActions.getUserData(codeDecoded));
- 
        dispatch({
         type: SET_LOGIN_STATUS,
         payload: loginStatus.SUCCESS,
@@ -88,10 +85,6 @@ const setToken = (id_token) => {
   } else {
     localStorage.removeItem("access_token");
   }
-};
-
-const logout = () => {
-  setSession(null);
 };
 
 export const changeLoginStatus = (status) => (dispatch, getState) => {
