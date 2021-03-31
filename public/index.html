@@ -51,7 +51,7 @@
             singleSpa.registerApplication (
                 'sample-manager',
                 () => System.import('sample-manager'),
-                (location) => location.pathname.startsWith('/sm/requestmanager')
+                (location) => location.pathname.startsWith('/sm/requestmanager') || location.pathname.startsWith('/sm/vendor')
             )
             singleSpa.start()
         })

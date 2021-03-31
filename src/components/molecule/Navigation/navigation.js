@@ -115,7 +115,7 @@ const NavigationMolecule = React.forwardRef((props, ref) => {
             title: "Genotyping Service Manager",
             icon: "icon",
             tag: "ddd",
-            path: "",
+            path: "/sm/vendor",
           },
           {
             key: "sc",
